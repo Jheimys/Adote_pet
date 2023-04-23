@@ -1,4 +1,5 @@
 import User from "../models/User.js"
+import bcrypt from "bcrypt";
 
 class UserController {
     static  async register (req, res){
@@ -47,6 +48,33 @@ class UserController {
 
             return
         }
+
+        /// bcrypt - npm documentação de referência  ///
+        const salt = await bcrypt.genSalt(12)
+        const hash = await bcrypt.hash(password, salt)
+
+        //Criando novo usuário
+        const user = new User({
+            name,
+            email,
+            phone,
+            password: hash
+        })
+
+        try {
+
+           const newUser = await user.save() 
+           res.status(201).json({
+            message:'Usuário criado!',
+            newUser
+           })
+
+        } catch (error) {
+
+            res.status(500).json({message: error})
+        }
+
+
     }
 }
 

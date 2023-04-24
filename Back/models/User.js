@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose from "../db/conn.js"
 
 const userSchema = new mongoose.Schema(
    
